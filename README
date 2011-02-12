@@ -1,0 +1,16 @@
+Xoops Engine legacy for legacy modules
+
+/XoopsEngine
+The root directory for Xoops Engine code
+
+/XoopsEngine/docs
+Documents
+
+/XoopsEngine/htdocs
+Web docroot
+
+/XoopsEngine/lib
+Libraries
+
+/XoopsEngine/var
+System variable data
