@@ -14,6 +14,9 @@
  * @version     $Id: admin.php 2755 2009-02-02 14:37:15Z phppp $
  */
 
+header("location: man.php");
+exit();
+
 $xoopsOption['pagetype'] = "admin";
 include "mainfile.php";
 include XOOPS_ROOT_PATH . "/include/cp_functions.php";

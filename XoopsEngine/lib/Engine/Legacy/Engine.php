@@ -75,7 +75,7 @@ class Engine extends \Engine\Xoops\Engine// implements \Kernel\EngineInterface
          * For backward compat
          */
         // Set default engine, "XOOPS"
-        $GLOBALS['xoops'] = $this;
+        //$GLOBALS['xoops'] = $this;
         /*#@-*/
     }
 

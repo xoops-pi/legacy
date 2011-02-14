@@ -14,10 +14,16 @@
  * @version     $Id: mainfile.dist.php 2634 2009-01-10 03:38:45Z phppp $
  */
 
-if (!isset($xoopsOption["nocommon"])) {
-    define('BOOTSTRAP', 'legacy');
-} else {
-    define('BOOTSTRAP', false);
+
+define("XOOPS_ENGINE", "legacy");
+
+if (!defined('BOOTSTRAP')) {
+    if (!isset($xoopsOption["nocommon"])) {
+        define('BOOTSTRAP', 'legacy');
+    } else {
+        define('BOOTSTRAP', false);
+    }
 }
+
 include __DIR__ . "/boot.php";
 return;
