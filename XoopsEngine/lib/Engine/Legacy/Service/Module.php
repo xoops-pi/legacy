@@ -35,7 +35,10 @@ class Module extends \Engine\Xoops\Service\Module
      */
     public function loadInfo($module, $category = false)
     {
-        xoops_loadLanguage('modinfo', $module);
+        return \Xoops_Module_Info::load($module, $category);
+
+        Xoops::service('translate')->loadTranslation('modinfo', $module);
+        //xoops_loadLanguage('modinfo', $module);
         $path = $this->getPath($module);
         $file = $path . "/xoops_version.php";
         if (!file_exists($file)) {
@@ -114,6 +117,10 @@ class Module extends \Engine\Xoops\Service\Module
         }
         // Normalize block configs
         if (!empty($config['blocks'])) {
+            foreach ($config['blocks'] as $key => &$block) {
+                $block['title'] = $block['name'];
+                unset($block['name']);
+            }
             $config['extensions']['block'] = $config['blocks'];
             unset($config['blocks']);
         }
@@ -188,6 +195,7 @@ class Module extends \Engine\Xoops\Service\Module
             $adminmenu = array();
             include XOOPS::path("www") . "/modules/{$module}/{$config['adminmenu']}";
             foreach ($adminmenu as $key => $page) {
+                /*
                 $link = substr($page['link'], 6);
                 if (false !== ($pos = strpos($link, "?"))) {
                     $controller = rtrim(substr($link, 0, $pos), ".php");
@@ -197,11 +205,19 @@ class Module extends \Engine\Xoops\Service\Module
                     $params = array();
                 }
                 $config['extensions']['navigation']['admin'][md5($page['link'])] = array(
-                    "label" => $page['title'],
+                    "label"         => $page['title'],
                     "route"         => "legacy",
                     "controller"    => $controller,
                     "action"        => "admin",
                     "params"        => $params,
+                );
+                */
+                $config['extensions']['navigation']['admin'][md5($page['link'])] = array(
+                    "label"         => $page['title'],
+                    "route"         => "admin",
+                    "controller"    => "legacy",
+                    "action"        => "index",
+                    "params"        => array("link" => urlencode($page['link'])),
                 );
             }
             unset($config['adminmenu']);
@@ -218,7 +234,7 @@ class Module extends \Engine\Xoops\Service\Module
                     $params = array();
                 }
                 $config['extensions']['navigation']['front'][md5($page['url'])] = array(
-                    'label' => $page['name'],
+                    'label'         => $page['name'],
                     "route"         => "legacy",
                     "controller"    => $controller,
                     "params"        => $params,
