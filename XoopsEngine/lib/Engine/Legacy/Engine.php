@@ -120,13 +120,20 @@ class Engine extends \Engine\Xoops\Engine// implements \Kernel\EngineInterface
         }
 
         try {
+            // Load prerequisite basic services
             $services = isset($this->configs['services']) ? $this->configs['services'] : array();
             foreach ($services as $name) {
                 \Xoops::service()->load($name);
             }
-        } catch (Exception $e) {
-            echo "Exception: <pre>" . $e->getMessage() . "</pre>";
+        } catch (\Exception $e) {
+            echo "Exception in basic service: <pre>" . $e->getMessage() . "</pre>";
+            if (\Xoops::service()->hasService('error')) {
+                \Xoops::service('error')->handleException($e);
+            }
         }
+
+        // profiling
+        \Xoops::service("profiler")->start('boot')->start('Application');
 
         try {
             try {
@@ -136,19 +143,19 @@ class Engine extends \Engine\Xoops\Engine// implements \Kernel\EngineInterface
                     "engine"        => $this,
                 );
                 $application = new \Legacy_Zend_Application($this->configs["environment"], $options);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 echo "Exception: <pre>" . $e->getMessage() . "</pre>";
                 if (\Xoops::service()->hasService('error')) {
                     \Xoops::service('error')->handleException($e);
                 }
             }
             $this->registry('application', $application);
-            \Xoops::service("profiler")->start(__METHOD__ . '=> bootstrap');
+            \Xoops::service("profiler")->stop('Application')->start('Bootstrap');
             $application->bootstrap();
-            \Xoops::service("profiler")->stop(__METHOD__ . '=> bootstrap');
-            \Xoops::service("profiler")->start(__METHOD__ . '=> run');
-            $application->run();
-            \Xoops::service("profiler")->stop(__METHOD__ . '=> run');
+
+            // Leave application run to header.php
+            //\Xoops::service("profiler")->stop('Bootstrap')->start('run');
+            //$application->run();
         } catch (Exception $e) {
             echo "Exception: <pre>" . $e->getMessage() . "</pre>";
             if (\Xoops::service()->hasService('error')) {

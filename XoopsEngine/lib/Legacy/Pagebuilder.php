@@ -47,22 +47,13 @@ class Legacy_Pagebuilder
 
     public function getTemplate()
     {
-        if ($this->theme) {
-            $template = $this->theme->getTemplate();
-            $backup = array($template->caching, $template->cache_lifetime);
-        } else {
-            $template = new Legacy_Smarty_Engine();
-        }
-
-        return $template;
+        return $this->theme->getView()->getEngine();
     }
 
     public function init($options = array())
     {
         $this->retrieveBlocks();
-        if ($this->theme) {
-            $this->theme->getTemplate()->assign_by_ref('xoBlocks', $this->blocks);
-        }
+        $this->getTemplate()->assign_by_ref('xoBlocks', $this->blocks);
         return true;
     }
 
@@ -112,9 +103,7 @@ class Legacy_Pagebuilder
                 $this->blocks[$side][$var["id"]] = $var;
             }
         }
-        if ($this->theme) {
-            list($template->caching, $template->cache_lifetime) = $backup;
-        }
+        list($template->caching, $template->cache_lifetime) = $backup;
         $template->assign('xoops_showlblock', !empty($this->blocks['canvas_left']));
         $template->assign('xoops_showrblock', !empty($this->blocks['canvas_right']));
     }

@@ -305,13 +305,13 @@ function redirect_header($url, $time = 3, $message = '', $addredirect = true, $a
             $url = XOOPS_URL;
         }
     }
+    /*
     if (defined('XOOPS_CPFUNC_LOADED')) {
         $theme = 'default';
     } else {
         $theme = $xoopsConfig['theme_set'];
     }
 
-    /*
     require_once XOOPS_ROOT_PATH . '/class/template.php';
     require_once XOOPS_ROOT_PATH . '/class/theme.php';
 
@@ -323,26 +323,16 @@ function redirect_header($url, $time = 3, $message = '', $addredirect = true, $a
     */
 
     $xoopsTpl = XOOPS::registry('view')->getEngine();
-    $xoTheme = XOOPS::registry('view')->loadTheme(array('plugins' => array()));
+    //$xoTheme = XOOPS::registry('view')->loadTheme();
 
-    $xoopsTpl->assign( array(
-        'xoops_theme' => $theme,
-        'xoops_imageurl' => XOOPS_THEME_URL . '/' . $theme . '/',
-        'xoops_themecss'=> xoops_getcss($theme),
-        'xoops_requesturi' => htmlspecialchars( $_SERVER['REQUEST_URI'], ENT_QUOTES),
-        'xoops_sitename' => htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES),
-        'xoops_slogan' => htmlspecialchars($xoopsConfig['slogan'], ENT_QUOTES),
-        'xoops_dirname' => isset($xoopsModule) ? $xoopsModule->getVar( 'dirname' ) : 'system',
-        'xoops_banner' => $xoopsConfig['banners'] ? xoops_getbanner() : '&nbsp;',
-        'xoops_pagetitle' => isset($xoopsModule) && is_object($xoopsModule) ? $xoopsModule->getVar('name') : htmlspecialchars( $xoopsConfig['slogan'], ENT_QUOTES ),
-    ) );
+    $theme = XOOPS::registry('view')->getTheme();
+    $xoopsTpl->assign(array(
+        'time'              => intval($time),
+        'xoops_themecss'    => XOOPS_THEME_URL . '/' . $theme . '/style.css',
+        'xoops_sitename'    => htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES),
+        'xoops_slogan'      => htmlspecialchars($xoopsConfig['slogan'], ENT_QUOTES),
+    ));
 
-    if ($xoopsConfig['debug_mode'] == 2 && $xoopsUserIsAdmin) {
-        $xoopsTpl->assign('time', 300);
-        $xoopsTpl->assign('xoops_logdump', $xoopsLogger->dump());
-    } else {
-        $xoopsTpl->assign('time', intval($time));
-    }
     if (!empty($_SERVER['REQUEST_URI']) && $addredirect && strstr($url, 'user.php')) {
         if (!strstr($url, '?')) {
             $url .= '?xoops_redirect=' . urlencode($_SERVER['REQUEST_URI']);
@@ -362,7 +352,9 @@ function redirect_header($url, $time = 3, $message = '', $addredirect = true, $a
     $message = trim($message) != '' ? $message : _TAKINGBACK;
     $xoopsTpl->assign('message', $message);
     $xoopsTpl->assign('lang_ifnotreload', sprintf(_IFNOTRELOAD, $url));
-    $xoopsTpl->display('db:system_redirect.html');
+    $redirectTemplate = 'module/system/templates/system_redirect.html';
+    $redirectTemplate = Xoops::registry('layout')->resourcePath($redirectTemplate, true) ?: Xoops::path($redirectTemplate);
+    $xoopsTpl->display($redirectTemplate);
     exit();
 }
 

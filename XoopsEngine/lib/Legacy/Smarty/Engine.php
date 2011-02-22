@@ -32,13 +32,14 @@ class Legacy_Smarty_Engine extends Smarty
     public function __construct($options = array())
     {
         parent::__construct();
+        $this->compiler_class = "Legacy_Smarty_Compiler";
         $this->left_delimiter = '<{';
         $this->right_delimiter = '}>';
 
         $this->cache_dir = XOOPS::path("var") . DIRECTORY_SEPARATOR . "cache" . DIRECTORY_SEPARATOR . "smarty" . DIRECTORY_SEPARATOR . "cache";
         $this->compile_dir = XOOPS::path("var") . DIRECTORY_SEPARATOR . "cache" . DIRECTORY_SEPARATOR . "smarty" . DIRECTORY_SEPARATOR . "compile";
 
-        $this->template_dir = XOOPS_THEME_PATH;
+        $this->template_dir = array(XOOPS_THEME_PATH);
         $this->plugins_dir = array(
             SMARTY_DIR . DIRECTORY_SEPARATOR . 'plugins',
             SMARTY_DIR . DIRECTORY_SEPARATOR . 'xoops_plugins'
@@ -131,15 +132,15 @@ class Legacy_Smarty_Engine extends Smarty
      * @param string $template the resource handle of the template file or template object
      * @param mixed $cache_id cache id to be used with this template
      * @param mixed $compile_id compile id to be used with this template
-     * @param object $ |null $parent next higher level of Smarty variables
+     * @param boolean $display
      * @return string rendered template output
      */
-    public function fetch($template, $cache_id = null, $compile_id = null, $parent = null, $display = false)
+    public function fetch($template, $cache_id = null, $compile_id = null, $display = false)
     {
         $this->currentTemplate = $template;
         $cache_id = is_null($cache_id) ? $this->cache_id : $cache_id;
         try {
-            $output = parent::fetch($template, $cache_id, $compile_id, $parent, $display);
+            $output = parent::fetch($template, $cache_id, $compile_id, $display);
         } catch (Exception $e) {
             trigger_error("<pre>" . $e->__toString() . "</pre><br />" . $template);
             $output = $e->getMessage();

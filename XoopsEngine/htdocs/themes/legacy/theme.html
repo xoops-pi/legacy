@@ -44,6 +44,15 @@
 </table>
 <!-- End header -->
 
+<!-- Load navigation -->
+<{navigation assign=navigation}>
+
+<{if $navigation}>
+    <{include file="navigation.html"}>
+<{/if}>
+<{*include file="navigation.html" navigation=$navigation*}>
+<!-- End header -->
+
 <table cellspacing="0">
     <tr>
         <!-- Start left blocks loop -->

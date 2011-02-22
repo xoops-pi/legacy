@@ -16,22 +16,24 @@
 class_exists("XOOPS") or die('XOOPS engine is not avilable');
 
 //include_once XOOPS::path('www') . '/include/notification_select.php';
-$GLOBALS['xoTheme']->render();
 
-/*
+XOOPS::registry('frontController')->postDispatch();
+exit();
+
+/**/
 XOOPS::registry('viewRenderer')->setNeverRender(false);
 XOOPS::registry('viewRenderer')->postDispatch();
 $content = ob_get_clean();
 
-$response = $this->frontController->getResponse();
+$response = XOOPS::registry('frontController')->getResponse();
 $response->appendBody($content);
+$request = XOOPS::registry('frontController')->getRequest();
 
 $plugin = XOOPS::registry('layout')->plugin;
-$request = $this->frontController->getRequest();
 $plugin->setRequest($request);
 $plugin->setResponse($response);
 $plugin->postDispatch($request);
 
 $response->sendResponse();
-*/
+/**/
 exit();

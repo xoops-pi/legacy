@@ -29,6 +29,10 @@ define('XOOPS_CPFUNC_LOADED', 1);
 
 function xoops_cp_header()
 {
+    $frontController = XOOPS::registry('frontController');
+    $frontController->preDispatch();
+    Xoops::registry('viewRenderer')->setTemplate('');
+    return;
     xoops_load("cpanel", "system");
     $cpanel =& XoopsSystemCpanel::getInstance();
     $cpanel->gui->header();
@@ -36,6 +40,9 @@ function xoops_cp_header()
 
 function xoops_cp_footer()
 {
+    XOOPS::registry('frontController')->postDispatch();
+    return;
+
     xoops_load("cpanel", "system");
     $cpanel =& XoopsSystemCpanel::getInstance();
     $cpanel->gui->footer();

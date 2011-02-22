@@ -29,7 +29,7 @@ class Registry extends \Engine\Xoops\Service\Registry
                 $class = "Engine\\Xoops\\Registry\\" . ucfirst($name);
             }
         } else {
-            $class = $module . "\\registry\\" . $name;
+            $class = "module\\" . $module . "\\registry\\" . $name;
         }
 
         if (!class_exists($class)) {

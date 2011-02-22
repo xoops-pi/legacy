@@ -17,13 +17,25 @@ class_exists("XOOPS") or die('XOOPS engine is not avilable');
 
 $GLOBALS['xoopsTpl'] = XOOPS::registry('view')->getEngine();
 $GLOBALS['xoTheme'] = XOOPS::registry('view')->loadTheme();
+$GLOBALS['xoTheme']->loadPlugins();
 
-/*
+$frontController = XOOPS::registry('frontController');
+$frontController->preDispatch();
+if (XOOPS::registry('viewRenderer')->isCached()) {
+    $frontController->postDispatch();
+    exit();
+}
+return;
+
+/**/
+$response = XOOPS::registry('frontController')->getResponse();
+// Is cached?
+if (XOOPS::registry('viewRenderer')->isCached()) {
+    $response->sendResponse();
+    exit();
+}
+$request = XOOPS::registry('frontController')->getRequest();
 $plugin = XOOPS::registry('layout')->plugin;
-$request = $this->frontController->getRequest();
-$plugin->setRequest($request);
-$response = $this->frontController->getResponse();
-$plugin->setResponse($response);
-XOOPS::registry('viewRenderer')->setNeverRender();
+$plugin->setRequest($request)->setResponse($response);
 ob_start();
-*/
+/**/
