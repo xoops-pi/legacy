@@ -403,6 +403,12 @@ class Legacy_Installer extends Xoops_Installer_App
      */
     protected function compat(& $message)
     {
+        if (!Xoops::service('module')->getMeta('legacy')) {
+            $message[] = 'Legacy adapter module is not installed.';
+            return false;
+        }
+        return true;
+
         global $xoopsDB;
 
         Xoops::service('translate')->loadTranslation('system', 'legacy');
