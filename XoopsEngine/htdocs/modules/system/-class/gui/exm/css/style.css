@@ -1,0 +1,296 @@
+/* General definitions */
+html { }
+
+body { background-color : #E9F0F7; font-size: 11px; font-family: Verdana, Arial, Helvetica, sans-serif; margin: 0px; padding: 0px;}
+
+img {border: none;}
+
+hr { height: 3px; border: 3px #E18A00 solid; width: 95%;}
+
+ul { margin: 2px; padding: 2px; list-style: decimal inside; text-align: left;}
+li { margin-left: 2px; list-style: square inside; color: #000000;}
+
+h1 { font-size: 20px;}
+h2 { font-size: 18px;}
+h3 { font-size: 16px;}
+h4 { font-size: 14px;}
+
+th {background-color: #56BAFA; color: #FFFFFF; padding : 4px; vertical-align : middle;}
+
+a:link {text-decoration: none; color: #4177A6; font-weight: bold; background-color: transparent;}
+a:visited {text-decoration: none; color: #4177A6; font-weight: bold; background-color: transparent;}
+a:hover {text-decoration: underline; color: #FF4500; font-weight: bold; background-color: transparent;}
+
+
+/* Code and Quote Definition */
+div.xoopsCode { font-size: 11px; color: #006600; background-color: #FAFAFA; border: #c2cdd6 1px dashed;}
+div.xoopsQuote { font-size: 11px; color: #444444; line-height: 125%; text-align: justify; background-color: #FAFAFA; border: #c2cdd6 1px dashed;}
+
+/* Links for Quotes */
+div.xoopsQuote a:link, div.xoopsQuote a:visited { color: #444444; font-weight: bold; background-color: transparent;}
+div.xoopsQuote a:hover, div.xoopsQuote a:active { color: #1778cb; background-color: transparent;}
+
+/* Redirect messages */
+div.errorMsg {
+	background-color: #1E90FF; 
+	color: White; 
+	text-align: center;  
+	border: 1px solid #0081FD;
+	padding: 8px;
+	font-weight: bold;
+}
+div.confirmMsg {
+	background-color : #FFF09B; 
+	color: #FF4500; 
+	text-align:center; 
+	border: 1px solid #FFD700;
+	font-weight : bold;
+	width: 80%;
+	margin: 0 auto;
+	padding: 8px;
+}
+
+/* General small */
+.fontSmall { font-size : 10px; background-color: transparent;}
+a.fontSmall { color: #006699;}
+a.fontSmall:hover { color: #C23030; text-decoration: underline;}
+
+/*forms elements*/
+input,textarea,select { 
+	border: 1px solid #CCCCCC; 
+	font-size: 11px;
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #FFFFFF;
+}
+input:focus, textarea:focus, select:focus{
+	border: 1px solid #999999;
+}
+
+.outer {border: 1px solid #CCCCCC;}
+.head {background-color: #EBEBEB; padding: 5px; font-weight: bold;}
+.even {background-color: #FFFFFF; padding: 5px;  border-bottom: 1px solid #CCCCCC; }
+.odd {background-color: #EFEFEF; padding: 5px; border-bottom: 1px solid #CCCCCC; }
+.foot {background-color: #E1E7EF; padding: 5px; font-weight: bold;}
+tr.head td {background-color: #BDE3FB; padding: 5px; font-weight: bold;}
+tr.even td {background-color: #FFFFFF; padding: 5px; border-bottom: 1px solid #CCCCCC;}
+tr.odd td {background-color: #EFEFEF; padding: 5px; border-bottom: 1px solid #CCCCCC; }
+tr.foot td {background-color: #E1E7EF; padding: 5px; font-weight: bold;}
+
+/**
+ * Declaraciones para nuevo formato
+ * @author BitC3R0
+ */
+div#logoHead{
+	padding: 0;
+	text-align: left;
+	background: url(../images/bgheader.jpg) repeat-x;
+	border-bottom: 3px solid #9ACD32;
+}
+div#navbarCP{
+	background: #F1F1FC;
+	/*padding: 4px;*/
+	border-top: 1px solid #FFFFFF;
+	border-bottom: 1px solid #CCCCCC;
+	font-weight: normal;
+	font-family: Arial, Helvetica, sans-serif;
+	height: 24px;
+}
+div#navbarCP ul{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+div#navbarCP ul li{
+	list-style: none;
+	padding: 0;
+	float: left;
+	margin: 0;
+	margin-left: 3px;
+	position: relative;
+}
+div#navbarCP ul li a{
+	padding: 4px;
+	display: block;
+	color: #000000;
+	font-weight: normal;
+	border: 1px solid #F1F1FC;
+}
+div#navbarCP ul li a:hover{
+	background-color: #E7F4F7;
+	border-color: #ADD8E6;
+}
+div#navbarCP ul li ul{
+	display: none;
+	position: absolute; 
+	top: 1em;
+	left: 0;
+	background: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	padding: 0;
+	margin: 0;
+}
+div#navbarCP ul li ul a{
+	color: #666666;
+	font-weight: normal;
+	background: url(../images/item.png) no-repeat left;
+	padding-left: 20px;
+	/*padding-left: 4px;*/
+	border: 1px solid #FFFFFF;
+}
+div#navbarCP ul li ul a:hover{
+	color: #000000;
+	background-color: #E7F4F7;
+	border-color: #ADD8E6;
+}
+div#navbarCP ul li ul li{
+	width: 150px;
+	margin: 0;
+	/*width: auto;*/
+}
+div#navbarCP ul li > ul {
+	top: auto;
+	left: auto;
+}
+div#navbarCP ul li:hover ul, div#navbarCP li.over ul{ display: block; }
+div#navbarCP ul li ul li{
+	float: none;
+}
+div#bodyCP{
+	width: 95%;
+	margin: 0 auto;
+	background-color: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	padding: 8px;
+}
+div#containBodyCP{
+	padding: 0;
+	margin: 0;
+	border-top: 1px solid #FFFFFF;
+	border-bottom: 1px solid #CCCCCC;
+}
+div#navOptionsCP{
+	padding: 0px 5px 0px 5px;
+	/*
+	text-align: right;
+	*/
+	background: #F1F1FC;
+	border-top: 1px solid #FFFFFF;
+	border-bottom: 1px solid #CCCCCC;
+	height: 35px;
+}
+div#navOptionsCP a{
+	border: 1px solid #DFE0FD;
+	height: 32px;
+	display: block;
+	width: 32px;
+	float: right;
+	margin: 0;
+	margin-right: 2px;
+}
+div#navOptionsCP a:hover{
+	background-color: #E7F4F7;
+	border-color: #ADD8E6;
+}
+
+div#navOptionsCP .modname{
+	float: left;
+	font-size: 18px;
+	font-weight: bold;
+	color: Silver;
+	margin-top: 4px;
+}
+
+div#navOptionsCP .module{
+	float: left;
+	font-size: 18px;
+	font-weight: bold;
+	color: Silver;
+	margin-top: 4px;
+}
+.CPrssLinks{
+	padding: 4px;
+}
+.CPrssLinks a{
+	font-size: 12px;
+	background: url(../images/item.png) no-repeat left;
+	padding: 2px;
+	display: block;
+	padding-left: 18px;
+}
+div.CPfoot{
+	padding: 4px;
+	background-color: #F1F1FC;
+	border-bottom: 1px solid #CCCCCC;
+	border-top: 1px solid #FFFFFF;
+	text-align: center;
+	font-size: 10px;
+	font-weight: bold;
+	color: #666666;
+}
+
+
+/* From the xoops.css  */
+
+
+.CPbigTitle{
+	font-size: 20px;
+	color: #1E90FF;
+	background: no-repeat left top;
+	font-weight: bold;
+	height: 40px;
+	vertical-align: middle;
+	padding: 10px 0 0 50px;
+	border-bottom: 3px solid #1E90FF;
+}
+.CPindexOptions{
+	padding: 4px;
+	vertical-align: top;
+}
+.CPmediumTitle{
+	font-weight: bold;
+	font-size: 14px;
+	color: #FF4500;
+}
+div.cpicon{
+	margin: 3px;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: center;
+}
+div.cpicon a { 
+	display: block; float: left;
+	height: 100px !important;
+	height: 100px; 
+	width: 110px !important;
+	width: 110px; 
+	vertical-align: middle; 
+	text-decoration : none;
+	border: 1px solid #CCCCCC;
+	padding: 2px 5px 1px 5px;
+	margin: 3px;
+	color: #666666;
+}
+div.cpicon a:hover{
+	background-color: #FFF6C1;
+	border: 1px solid #FF9900;
+	color: #1E90FF;
+}
+
+div.cpicon img { margin-top: 8px; margin-bottom: 8px; }
+
+div.cpicon span {
+	font-size: 12px;
+	font-weight: bold;
+	display: block;
+}
+div.cpicon span.uno{
+	font-size: 11px;
+	font-weight: normal;
+	text-decoration: underline;
+	color: Blue;
+}
+div.cpicon span.unor{
+	font-size: 11px;
+	font-weight: normal;
+	text-decoration: underline;
+	color: #CC0000;
+}
