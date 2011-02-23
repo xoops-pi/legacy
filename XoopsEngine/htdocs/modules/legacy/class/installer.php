@@ -29,7 +29,7 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
     {
         $moduleCleaned = true;
         $modules = Xoops::service('module')->getMeta();
-        foreach ($modules as $module) {
+        foreach ($modules as $key => $module) {
             if ($module['type'] == 'legacy') {
                 $moduleCleaned = false;
                 break;
@@ -54,6 +54,7 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
     protected function setupDb(& $message)
     {
         global $xoopsDB;
+        $module = $this->module->dirname;
         XOOPS::registry('application')->getBootstrap()->bootstrap('legacy');
         Xoops::service('translate')->loadTranslation('system', 'legacy');
 
@@ -66,8 +67,8 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
 
         $onFailure = function ($cretedTables, $createdViews) use ($xoopsDB)
         {
-            foreach ($createdTables as $ct) {
-                $xoopsDB->query("DROP TABLE IF EXISTS " . $xoopsDB->prefix($ct));
+            foreach ($createdTables as $ct => $type) {
+                $xoopsDB->query("DROP " . $type . " IF EXISTS " . $xoopsDB->prefix($ct));
             }
             foreach ($createdViews as $ct) {
                 $xoopsDB->query("DROP VIEW IF EXISTS " . $xoopsDB->prefix($ct));
@@ -208,6 +209,14 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
         if (!$status) {
             $message[] = "Rank data are not created";
             return $onFailure($cretedTables, $createdViews);
+        }
+
+        $model = XOOPS::getModel("table");
+        foreach ($createdTables as $table => $type) {
+            $model->insert(array("name" => $table, "module" => $module, "type" => $type));
+        }
+        foreach ($createdViews as $table) {
+            $model->insert(array("name" => $table, "module" => $module, "type" => 'view'));
         }
 
         return $status;

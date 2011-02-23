@@ -32,6 +32,14 @@ return array(
 
     'extensions'    => array(
         'event'     => "event.php",
-        'navigation'    => false,
+        'navigation'    => array(
+            'front' => false,
+            'admin' => array(
+                'group' => array(
+                    'label'         => "Groups",
+                    'uri'           => "admin/group.php",
+                ),
+            ),
+        ),
     ),
 );
