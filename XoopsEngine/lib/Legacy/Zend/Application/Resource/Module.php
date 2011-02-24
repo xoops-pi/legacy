@@ -33,7 +33,7 @@ class Legacy_Zend_Application_Resource_Module extends Zend_Application_Resource_
             if (!$xoopsModule || !$xoopsModule->getVar('isactive')) {
                 throw new Exception("Module unavailable!", 404);
             }
-            Xoops::service('translate')->loadTranslation("main", $dirname);
+            //Xoops::service('translate')->loadTranslation("main", $dirname);
             $xoopsModuleConfig = Xoops::service('module')->loadConfig($dirname);
 
             /*

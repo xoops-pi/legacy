@@ -25,6 +25,7 @@ class Legacy_Zend_Application_Resource_Translate extends Zend_Application_Resour
     {
         $options = $this->getOptions();
         $bootstrap = $this->getBootstrap();
+        $bootstrap->bootstrap('module');
         $bootstrap->bootstrap('config');
 
         $options['adapter'] = isset($options['adapter']) ? $options['adapter'] : 'legacy';
@@ -37,6 +38,11 @@ class Legacy_Zend_Application_Resource_Translate extends Zend_Application_Resour
         if (isset($options['load'])) {
             $load = $options['load'];
             unset($options['load']);
+        }
+        $moduleLoad = array();
+        if (isset($options['module'])) {
+            $moduleLoad = $options['module'];
+            unset($options['module']);
         }
 
         $translate = Xoops::service('translate', $options);
@@ -51,5 +57,15 @@ class Legacy_Zend_Application_Resource_Translate extends Zend_Application_Resour
         if (!empty($GLOBALS['xoopsOption']['pagetype'])) {
             $translate->loadTranslation($GLOBALS['xoopsOption']['pagetype']);
         }
+
+        $moduleInfo = Xoops::service('module')->loadInfo($GLOBALS['xoopsModule']->getVar('dirname'));
+        $moduleTranslate = !empty($moduleInfo['translate'])
+                            ? $moduleInfo['translate']
+                            : ($moduleLoad ?: array());
+
+        if (empty($moduleTranslate['data']) || "info" == $moduleTranslate['data']) {
+            return;
+        }
+        XOOPS::service("translate")->loadTranslation($moduleTranslate['data'], $GLOBALS['xoopsModule']->getVar('dirname'));
     }
 }
