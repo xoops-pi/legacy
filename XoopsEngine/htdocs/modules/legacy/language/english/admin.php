@@ -41,5 +41,3 @@ define('_AM_ADMINNO', 'There must be at least one user in the webmasters group')
 
 // Custom block, suggested by trabis
 define("_AM_CUSTOMBLOCK","Custom Block");
-
-?>
