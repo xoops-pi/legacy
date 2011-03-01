@@ -41,3 +41,8 @@ define('_AM_ADMINNO', 'There must be at least one user in the webmasters group')
 
 // Custom block, suggested by trabis
 define("_AM_CUSTOMBLOCK","Custom Block");
+// Group permission phrases
+define('_AM_PERMADDNG', 'Could not add %s permission to %s for group %s');
+define('_AM_PERMADDOK', 'Added %s permission to %s for group %s');
+define('_AM_PERMRESETNG', 'Could not reset group permission for module %s');
+define('_AM_PERMADDNGP', 'All parent items must be selected.');

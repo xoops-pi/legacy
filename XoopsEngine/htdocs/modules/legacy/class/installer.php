@@ -22,13 +22,18 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
 {
     public function preInstall(&$message)
     {
-        return $this->setupDb($message);
+        $status = $this->setupHost($message);
+        if ($status) {
+            $status = $this->setupDb($message);
+        }
+        return $status;
     }
 
     public function preUninstall(&$message)
     {
         $moduleCleaned = true;
         $modules = Xoops::service('module')->getMeta();
+        // Check if there are legacy modules which are dependent on the legacy module
         foreach ($modules as $key => $module) {
             if ($module['type'] == 'legacy') {
                 $moduleCleaned = false;
@@ -44,6 +49,25 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
 
     public function postUninstall(&$message)
     {
+    }
+
+    /**
+     * Set up hosts paths, copies from default engine (xoops)
+     */
+    protected function setupHost(& $message)
+    {
+        $sourceFile = Xoops::path('lib') . '/boot/hosts.xoops.ini';
+        $targetFile = Xoops::path('lib') . '/boot/hosts.legacy.ini';
+        if (file_exists($targetFile)) {
+            chmod($targetFile, 0777);
+        }
+        $status = file_put_contents($targetFile, file_get_contents($sourceFile));
+        chmod($targetFile, 0444);
+        if (!$status) {
+            $message[] = "Hosts file 'hosts.legacy.ini' is not setup correctly.";
+        }
+
+        return $status;
     }
 
     /**

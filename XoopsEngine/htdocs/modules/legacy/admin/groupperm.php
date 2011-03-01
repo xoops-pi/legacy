@@ -37,7 +37,7 @@ if (is_array($_POST['perms']) && !empty($_POST['perms'])) {
                             foreach ($parent_ids as $pid) {
                                 if ($pid != 0 && !in_array($pid, array_keys($item_ids))) {
                                     // one of the parent items were not selected, so skip this item
-                                    $msg[] = sprintf(_MD_AM_PERMADDNG, '<strong>'.$perm_name.'</strong>', '<strong>'.$perm_data['itemname'][$item_id].'</strong>', '<strong>'.$group_list[$group_id].'</strong>').' ('._MD_AM_PERMADDNGP.')';
+                                    $msg[] = sprintf(_AM_PERMADDNG, '<strong>'.$perm_name.'</strong>', '<strong>'.$perm_data['itemname'][$item_id].'</strong>', '<strong>'.$group_list[$group_id].'</strong>').' ('._AM_PERMADDNGP.')';
                                     continue 2;
                                 }
                             }
@@ -48,21 +48,24 @@ if (is_array($_POST['perms']) && !empty($_POST['perms'])) {
                         $gperm->setVar('gperm_modid', $modid);
                         $gperm->setVar('gperm_itemid', $item_id);
                         if (!$gperm_handler->insert($gperm)) {
-                            $msg[] = sprintf(_MD_AM_PERMADDNG, '<strong>'.$perm_name.'</strong>', '<strong>'.$perm_data['itemname'][$item_id].'</strong>', '<strong>'.$group_list[$group_id].'</strong>');
+                            $msg[] = sprintf(_AM_PERMADDNG, '<strong>'.$perm_name.'</strong>', '<strong>'.$perm_data['itemname'][$item_id].'</strong>', '<strong>'.$group_list[$group_id].'</strong>');
                         } else {
-                            $msg[] = sprintf(_MD_AM_PERMADDOK, '<strong>'.$perm_name.'</strong>', '<strong>'.$perm_data['itemname'][$item_id].'</strong>', '<strong>'.$group_list[$group_id].'</strong>');
+                            $msg[] = sprintf(_AM_PERMADDOK, '<strong>'.$perm_name.'</strong>', '<strong>'.$perm_data['itemname'][$item_id].'</strong>', '<strong>'.$group_list[$group_id].'</strong>');
                         }
                         unset($gperm);
                     }
                 }
             }
         } else {
-            $msg[] = sprintf(_MD_AM_PERMRESETNG, $module->getVar('name').'('.$perm_name.')');
+            $msg[] = sprintf(_AM_PERMRESETNG, $module->getVar('name').'('.$perm_name.')');
         }
     }
 }
 
-$backlink = isset($_POST['redirect_url']) ? $_POST['redirect_url'] : xoops_getenv("HTTP_REFERER");
-$backlink = $backlink ?: XOOPS_URL . '/admin.php';
+if (!empty($_POST['redirect_url'])) {
+    $backlink = Xoops::url('module') . '/' . $module->getVar('dirname') . '/' . $_POST['redirect_url'];
+} else {
+    $backlink = xoops_getenv("HTTP_REFERER") ?: Xoops::url('www') . '/admin.php';
+}
 
 redirect_header($backlink, 2, implode("<br />", $msg));
