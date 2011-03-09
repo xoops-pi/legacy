@@ -228,7 +228,7 @@ class XoopsConfigHandler
         $categoryMap = array(
             XOOPS_CONF              => 'general',
             XOOPS_CONF_METAFOOTER   => 'meta',
-            XOOPS_CONF_CENSOR       => 'censor',
+            XOOPS_CONF_CENSOR       => 'text',
             XOOPS_CONF_MAILER       => 'mail',
         );
         $configs = isset($categoryMap[$category]) ? Xoops::service('registry')->config->read('', $categoryMap[$category]): array();
