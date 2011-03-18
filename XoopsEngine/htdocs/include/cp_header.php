@@ -5,7 +5,7 @@
  * the file that will include this file must be located under xoops_url/modules/module_directory_name/admin_directory_name/
  */
 
-define('BOOTSTRAP', 'legacy.admin');
+define('XOOPS_BOOTSTRAP', 'legacy.admin');
 //$xoopsOption['pagetype'] = "admin";
 include_once '../../../mainfile.php';
 include_once XOOPS_ROOT_PATH . "/include/cp_functions.php";

@@ -17,11 +17,11 @@
 
 define("XOOPS_ENGINE", "legacy");
 
-if (!defined('BOOTSTRAP')) {
+if (!defined('XOOPS_BOOTSTRAP')) {
     if (!isset($xoopsOption["nocommon"])) {
-        define('BOOTSTRAP', 'legacy');
+        define('XOOPS_BOOTSTRAP', 'legacy');
     } else {
-        define('BOOTSTRAP', false);
+        define('XOOPS_BOOTSTRAP', false);
     }
 }
 
