@@ -134,7 +134,7 @@ class xos_logos_PageBuilder
             $template->cache_lifetime = $bcachetime;
         }
         $template->setCompileId($xobject->getVar( 'dirname', 'n' ));
-        $tplName = ( $tplName = $xobject->getVar('template') ) ? "db:$tplName" : "db:system_block_dummy.html";
+        $tplName = ( $tplName = $xobject->getVar('template') ) ? "db:$tplName" : "db:legacy/block_dummy.html";
         $cacheid = $this->generateCacheId( 'blk_' . $xobject->getVar('bid')/*, $xobject->getVar( 'show_func', 'n' )*/ );
 
         if ( !$bcachetime || !$template->is_cached( $tplName, $cacheid ) ) {

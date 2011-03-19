@@ -352,7 +352,7 @@ function redirect_header($url, $time = 3, $message = '', $addredirect = true, $a
     $message = trim($message) != '' ? $message : _TAKINGBACK;
     $xoopsTpl->assign('message', $message);
     $xoopsTpl->assign('lang_ifnotreload', sprintf(_IFNOTRELOAD, $url));
-    $redirectTemplate = 'module/system/templates/system_redirect.html';
+    $redirectTemplate = 'module/legacy/templates/redirect.html';
     $redirectTemplate = Xoops::registry('layout')->resourcePath($redirectTemplate, true) ?: Xoops::path($redirectTemplate);
     $xoopsTpl->display($redirectTemplate);
     exit();

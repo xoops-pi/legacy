@@ -160,7 +160,7 @@ blockquote {font-style : italic; line-height:1.4em;}
 }
 #xo-userbar_siteclosed input:hover {}
 
-/*============== Styles for system_redirect.html (override system module) =================*/
+/*============== Styles for redirect.html (override legacy module) =================*/
 #xo-redirect {
     width:                  780px;
     margin:                 50px auto;

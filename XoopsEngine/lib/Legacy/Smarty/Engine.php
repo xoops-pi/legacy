@@ -27,7 +27,7 @@ require SMARTY_DIR . 'Smarty.class.php';
 class Legacy_Smarty_Engine extends Smarty
 {
     protected $cache_id;
-    public $currentTemplate; // = "db:system_dummy.html";
+    public $currentTemplate; // = "db:legacy/dummy.html";
 
     public function __construct($options = array())
     {

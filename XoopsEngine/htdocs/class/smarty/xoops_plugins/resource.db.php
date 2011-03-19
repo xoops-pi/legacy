@@ -64,7 +64,12 @@ function smarty_resource_db_getpath($tpl_name, &$smarty)
     } else {
         $pos = strpos($tpl_name, "_");
         $module = substr($tpl_name, 0, $pos);
-        $template = $tpl_name;
+        if ('system' == $module) {
+            $module = 'legacy';
+            $template = substr($tpl_name, $pos + 1);
+        } else {
+            $template = $tpl_name;
+        }
     }
     $path = XOOPS::registry("view")->resourcePath("modules/{$module}/templates/{$template}");
     return Xoops::path($path);

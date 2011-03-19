@@ -268,7 +268,7 @@ class Legacy_Theme extends Legacy_Zend_Layout
         global $xoopsModule, $xoopsLogger;
 
         if ($_SERVER['REQUEST_METHOD'] != 'POST' && $this->contentCacheLifetime) {
-            $template = $this->contentTemplate ?: 'db:system_dummy.html';
+            $template = $this->contentTemplate ?: 'db:legacy/dummy.html';
 
             $this->template->caching = 2;
             $this->template->cache_lifetime = $this->contentCacheLifetime;
