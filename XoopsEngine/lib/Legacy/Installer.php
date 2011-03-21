@@ -24,6 +24,8 @@ class Legacy_Installer extends Xoops_Installer_App
     {
         parent::__construct($installer);
         XOOPS::registry('application')->getBootstrap()->bootstrap('legacy');
+        Xoops_Legacy::loadModule();
+        Xoops_Legacy::loadUser();
         /*
         if (empty($GLOBALS['xoopsDB'])) {
             $options = array(

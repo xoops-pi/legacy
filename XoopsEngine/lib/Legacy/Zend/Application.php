@@ -33,7 +33,6 @@ class Legacy_Zend_Application extends Xoops_Zend_Application
      */
     public function __construct($environment = null, $options = null)
     {
-        //$options['bootfile'] = 'legacy';
         $options['bootstrap'] = array(
             "path"  => __DIR__ . "/Application/Bootstrap.php",
             "class" => "Legacy_Zend_Application_Bootstrap"
