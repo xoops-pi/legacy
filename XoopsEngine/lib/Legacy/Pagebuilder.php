@@ -9,26 +9,22 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       The Xoops Engine http://sourceforge.net/projects/xoops/
+ * @copyright       Xoops Engine http://www.xoopsengine.org
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
- * @author          Skalpa Keo <skalpa@xoops.org>
  * @since           3.0
  * @package         Legacy
- * @subpackage      Installer
  * @version         $Id$
  */
 
 /**
- * xos_logos_PageBuilder component class file
+ * Legacy_PageBuilder component class file
  *
- * @copyright   The XOOPS project http://www.xoops.org/
- * @license      http://www.fsf.org/copyleft/gpl.html GNU public license
- * @package      xos_logos
- * @subpackage   xos_logos_PageBuilder
- * @version     $Id: theme_blocks.php 2902 2009-03-05 07:13:07Z phppp $
- * @author       Skalpa Keo <skalpa@xoops.org>
- * @since        2.3.0
+ * @copyright       The XOOPS project http://www.xoops.org/
+ * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
+ * @version         $Id: theme_blocks.php 2902 2009-03-05 07:13:07Z phppp $
+ * @author          Skalpa Keo <skalpa@xoops.org>
+ * @since           2.3.0
  */
 if (!defined('XOOPS_ROOT_PATH'))    exit();
 

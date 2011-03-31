@@ -1,4 +1,22 @@
 <?php
+/**
+ * Legacy theme handler
+ *
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * @copyright       Xoops Engine http://www.xoopsengine.org
+ * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
+ * @author          Taiwen Jiang <phppp@users.sourceforge.net>
+ * @since           3.0
+ * @package         Xoops_Core
+ * @version         $Id$
+ */
+
 
 class Legacy_Theme extends Legacy_Zend_Layout
 {
@@ -71,221 +89,9 @@ class Legacy_Theme extends Legacy_Zend_Layout
         'script' => array(),
    );
 
-    /**
-     * Array of strings to be inserted in the head tag of HTML documents
-     * @var array
-     */
-    //protected $htmlHeadStrings = array();
-    /**
-     * Custom variables that will always be assigned to the template
-     * @var array
-     */
-    //protected $templateVars = array();
-
-    /**
-     * User extra information for cache id, like language, user groups
-     *
-     * @var boolean
-     */
-    //protected $use_extra_cache_id = true;
-
-   /**#@-*/
-
-    public function ______construct($options = array())
-    {
-        if (isset($options['view'])) {
-            $view = $options['view'];
-            unset($options['view']);
-            $this->setView($view);
-            $this->setTheme($view->getTheme());
-            $this->setTemplate($view->getEngine());
-            //$this->contentTemplate = $view->getViewScript();
-        }
-        $this->init($options);
-    }
-
-    public function ____setOptions($options = array())
-    {
-    }
-
-    public function ____setView($view)
-    {
-        $this->view = $view;
-    }
-
-    public function setTheme($theme)
-    {
-        parent::setTheme($theme);
-        $this->folderName = $this->theme;
-    }
-
-    public function ____setTemplate($template)
-    {
-        $this->template = $template;
-        $this->template->assign_by_ref('xoTheme', $this);
-        //$this->template->template_dir = (array) $this->template->template_dir;
-        //$this->template->template_dir[] = Xoops::path('theme') . '/' . $this->folderName;
-    }
-
     public function getTemplate()
     {
         return $this->template;
-    }
-
-    /**
-     * Initializes this theme
-     *
-     * Upon initialization, the theme creates its template engine and instanciates the
-     * plug-ins from the specified {@link $plugins} list. If the theme is a 2.0 theme, that does not
-     * display redirection messages, the HTTP redirections system is disabled to ensure users will
-     * see the redirection screen.
-     *
-     * @param array $options
-     * @return bool
-     */
-    protected function ____init($options = array())
-    {
-        //global $xoops;
-
-        $this->path = XOOPS_THEME_PATH . '/' . $this->folderName;
-        $this->url = XOOPS_THEME_URL . '/' . $this->folderName;
-
-        //$this->template = new XoopsTpl();
-        $this->template->currentTheme = $this;
-        //$this->template->assign_by_ref('xoTheme', $this);
-
-        global $xoopsConfig, $xoopsModule, $xoopsUser;
-        $this->template->assign(array(
-            'xoops_theme' => $xoopsConfig['theme_set'],
-            'xoops_imageurl' => XOOPS_THEME_URL . '/' . $this->folderName . '/',
-            'xoops_themecss'=> xoops_getcss($xoopsConfig['theme_set']),
-            'xoops_requesturi' => htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES),
-            'xoops_sitename' => htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES),
-            'xoops_slogan' => htmlspecialchars($xoopsConfig['slogan'], ENT_QUOTES),
-            'xoops_dirname' => isset($xoopsModule) && is_object($xoopsModule) ? $xoopsModule->getVar('dirname') : 'system',
-            'xoops_banner' => $xoopsConfig['banners'] ? xoops_getbanner() : '&nbsp;',
-            'xoops_pagetitle' => isset($xoopsModule) && is_object($xoopsModule) ? $xoopsModule->getVar('name') : htmlspecialchars($xoopsConfig['slogan'], ENT_QUOTES),
-       ));
-        if (isset($xoopsUser) && is_object($xoopsUser)) {
-            $this->template->assign(array(
-                'xoops_isuser' => true,
-                'xoops_userid' => $xoopsUser->getVar('uid'),
-                'xoops_uname' => $xoopsUser->getVar('uname'),
-                'xoops_isadmin' => $GLOBALS['xoopsUserIsAdmin'],
-           ));
-        } else {
-            $this->template->assign(array('xoops_isuser' => false, 'xoops_isadmin' => false));
-        }
-        // Meta tags
-        $config = XOOPS::service('registry')->config->read('', "meta");
-        foreach ($config as $key => $value) {
-            if (substr($key, 0, 5) == 'meta_') {
-                $name = substr($key, 5);
-                $this->addMeta('meta', substr($name, 5), $value);
-            } else {
-                // prefix each tag with 'xoops_'
-                $this->template->assign("xoops_" . $key, $value);
-            }
-        }
-
-        $this->loadLocalization();
-
-        if (isset($options['plugins'])) {
-            $this->plugins = (array) $options['plugins'];
-        }
-
-        foreach ($this->plugins as $key => $plugin) {
-            if (!is_object($plugin)) {
-                $plugin = new $plugin($this);
-            }
-            $plugin->init();
-        }
-        if ($this->bufferOutput) {
-            ob_start();
-        }
-
-        /*
-        //$GLOBALS['xoTheme'] =& $this;
-        //$GLOBALS['xoopsTpl'] =& $this->template;
-        // Instanciate and initialize all the theme plugins
-        foreach ($this->plugins as $k => $bundleId) {
-            if (!is_object($bundleId)) {
-                $this->plugins[$bundleId] = new $bundleId();
-                $this->plugins[$bundleId]->theme = $this;
-                $this->plugins[$bundleId]->xoInit();
-                unset($this->plugins[$k]);
-            }
-        }
-        */
-        return true;
-    }
-
-    /**
-     * Generate cache id based on extra information of language and user groups
-     *
-     * User groups other than anonymous should be detected to avoid disclosing group sensitive contents
-     *
-     * @param string    $cache_id        raw cache id
-     * @param string    $extraString    extra string
-     *
-     * @return string    complete cache id
-     */
-    function ____generateCacheId($cache_id, $extraString = '')
-    {
-        static $extra_string;
-
-        if (!$this->use_extra_cache_id) {
-            return $cache_id;
-        }
-
-        if (empty($extraString)) {
-            if (empty($extra_string)) {
-                global $xoopsUser, $xoopsConfig;
-
-                // Generate language section
-                $extra_string = $xoopsConfig['language'];
-
-                // Generate group section
-                if (!@is_object($xoopsUser)) {
-                    $extra_string .= '|' . XOOPS_GROUP_ANONYMOUS;
-                } else {
-                    $groups = $xoopsUser->getGroups();
-                    sort($groups);
-                    // Generate group string for non-anonymous groups,
-                    // XOOPS_DB_PASS and XOOPS_DB_NAME (before we find better variables) are used to protect group sensitive contents
-                    $extra_string .= '|' . implode(",", $groups).substr(md5(XOOPS_DB_PASS.XOOPS_DB_NAME), 0, strlen(XOOPS_DB_USER) * 2);
-                }
-            }
-            $extraString = $extra_string;
-        }
-        $cache_id .= '|' . $extraString;
-
-        return $cache_id;
-    }
-
-    function ____checkCache()
-    {
-        global $xoopsModule, $xoopsLogger;
-
-        if ($_SERVER['REQUEST_METHOD'] != 'POST' && $this->contentCacheLifetime) {
-            $template = $this->contentTemplate ?: 'db:legacy/dummy.html';
-
-            $this->template->caching = 2;
-            $this->template->cache_lifetime = $this->contentCacheLifetime;
-            $uri = str_replace(XOOPS_URL, '', $_SERVER['REQUEST_URI']);
-            // Clean uri by removing session id
-            if (defined('SID') && SID && strpos($uri, SID)) {
-                $uri = preg_replace("/([\?&])(".SID."$|".SID."&)/", "\\1", $uri);
-            }
-            $this->contentCacheId = $this->generateCacheId($uri);
-
-            if ($this->template->is_cached($template, $this->contentCacheId)) {
-                $xoopsLogger->addExtra($template,    sprintf('Cached (regenerates every %d seconds)', $this->contentCacheLifetime ));
-                $this->render(null, null, $template);
-                return true;
-            }
-        }
-        return false;
     }
 
     public function render($name = null)
@@ -295,69 +101,6 @@ class Legacy_Theme extends Legacy_Zend_Layout
         $this->url = Xoops::path('url') . '/' . $this->folderName;
         $this->getView()->getEngine()->assign_by_ref('xoTheme', $this);
         return parent::render($name);
-    }
-
-    /**
-     * Render the page
-     *
-     * The theme engine builds pages from 2 templates: canvas and content.
-     *
-     * A module can call this method directly and specify what templates the theme engine must use.
-     * If render() hasn't been called before, the theme defaults will be used for the canvas and
-     * page template (and xoopsOption['template_main'] for the content).
-     *
-     * @param string    $canvasTpl      The canvas template, if different from the theme default
-     * @param string    $pageTpl        The page template, if different from the theme default (unsupported, 2.3+ only)
-     * @param string    $contentTpl     The content template
-     * @param array     $vars           Template variables to send to the template engine
-     */
-    function ____render($canvasTpl = null, $pageTpl = null, $contentTpl = null, $vars = array())
-    {
-        global $xoops, $xoopsLogger, $xoopsOption;
-
-        if ($this->renderCount) {
-            return false;
-        }
-        $xoopsLogger->startTime('Page rendering');
-
-        // @internal: Lame fix to ensure the metas specified in the xoops config page don't appear twice
-        $old = array('robots', 'keywords', 'description', 'rating', 'author', 'copyright');
-        foreach ($this->metas['meta'] as $name => $value) {
-            if (in_array($name, $old)) {
-                $this->template->assign("xoops_meta_$name", htmlspecialchars($value, ENT_QUOTES));
-                unset($this->metas['meta'][$name]);
-            }
-        }
-
-        if ($canvasTpl) $this->canvasTemplate = $canvasTpl;
-        if ($contentTpl) $this->contentTemplate = $contentTpl ?: $this->view->getViewScript();
-
-        if (!empty($vars)) {
-            $this->template->assign($vars);
-        }
-        if ($this->contentTemplate) {
-            $this->content = $this->template->fetch($this->contentTemplate, $this->contentCacheId);
-        }
-        if ($this->bufferOutput) {
-            $this->content .= ob_get_contents();
-            ob_end_clean();
-        }
-        $this->template->assign_by_ref('xoops_contents', $this->content);
-
-        // We assume no overlap between $xoopsOption['xoops_module_header'] and $this->template->get_template_vars('xoops_module_header') ?
-        $header = empty($xoopsOption['xoops_module_header']) ? $this->template->get_template_vars('xoops_module_header') : $xoopsOption['xoops_module_header'];
-        $this->template->assign('xoops_module_header', $this->renderMetas(null, true) . "\n" . $header);
-
-        if (!empty($xoopsOption['xoops_pagetitle'])) {
-            $this->template->assign('xoops_pagetitle', $xoopsOption['xoops_pagetitle']);
-        }
-
-        // Do not cache the main (theme.html) template output
-        $this->template->caching = 0;
-        $this->template->display($this->path . '/' . $this->canvasTemplate);
-
-        $this->renderCount++;
-        $xoopsLogger->stopTime('Page rendering');
     }
 
     /**
@@ -531,25 +274,5 @@ class Legacy_Theme extends Legacy_Zend_Layout
             }
         }
         return $str;
-    }
-
-    /**
-     * Return a themable file resource path
-     *
-     * @param string $path
-     * @return string
-     */
-    function ____resourcePath($path)
-    {
-        return $this->view->resourcePath($path);
-
-        global $xoops;
-        if (substr($path, 0, 1) == '/') {
-            $path = substr($path, 1);
-        }
-        if (file_exists("$this->path/$path")) {
-            return "themes/$this->folderName/$path";
-        }
-        return $path;
     }
 }
