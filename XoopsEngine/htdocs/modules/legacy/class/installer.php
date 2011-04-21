@@ -56,15 +56,15 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
      */
     protected function setupHost(& $message)
     {
-        $sourceFile = Xoops::path('lib') . '/boot/hosts.xoops.ini';
-        $targetFile = Xoops::path('lib') . '/boot/hosts.legacy.ini';
+        $sourceFile = Xoops::path('lib') . '/boot/hosts.xoops.ini.php';
+        $targetFile = Xoops::path('lib') . '/boot/hosts.legacy.ini.php';
         if (file_exists($targetFile)) {
             chmod($targetFile, 0777);
         }
         $status = file_put_contents($targetFile, file_get_contents($sourceFile));
         chmod($targetFile, 0444);
         if (!$status) {
-            $message[] = "Hosts file 'hosts.legacy.ini' is not setup correctly.";
+            $message[] = "Hosts file 'hosts.legacy.ini.php' is not setup correctly.";
         }
 
         return $status;
