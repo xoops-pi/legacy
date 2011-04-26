@@ -122,8 +122,8 @@ class Engine extends \Engine\Xoops\Engine// implements \Kernel\EngineInterface
         try {
             // Load prerequisite basic services
             $services = isset($this->configs['services']) ? $this->configs['services'] : array();
-            foreach ($services as $name) {
-                \Xoops::service()->load($name);
+            foreach ($services as $name => $options) {
+                \Xoops::service()->load($name, $options);
             }
         } catch (\Exception $e) {
             echo "Exception in basic service: <pre>" . $e->getMessage() . "</pre>";

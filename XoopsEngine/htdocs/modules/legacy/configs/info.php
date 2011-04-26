@@ -19,7 +19,7 @@
  */
 
 return array(
-    'name'          => 'Legacy module agency',
+    'name'          => _LEGACY_MI_NAME,
     'description'   => '',
     'version'       => "1.0.0",
     'email'         => "infomax@gmail.com",

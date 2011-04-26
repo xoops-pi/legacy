@@ -213,8 +213,9 @@ class Legacy_Db
      */
     public function errno()
     {
-        return $this->conn->errorCode();
+        return (int) $this->conn->errorCode();
     }
+
     /**
      * Fetch extended error information associated with the last operation on the database handle
      *
@@ -309,11 +310,20 @@ class Legacy_Db
         if (!empty($limit)) {
             $sql = $sql . ' LIMIT ' . (int)$start . ', ' . (int)$limit;
         }
+        try {
+            $result = $this->conn->query($sql);
+            //$result = ('' === $stmt->errorCode() || '00000' === $stmt->errorCode()) ? true : false;
+        } catch (Exception $e) {
+            $result = false;
+        };
+
+        /*
         if ($result = $this->conn->query($sql)) {
             //$this->logEvent($sql);
         } else {
             //$this->logError($sql);
         }
+        */
         return $result;
     }
 

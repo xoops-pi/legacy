@@ -59,10 +59,9 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
         $sourceFile = Xoops::path('lib') . '/boot/hosts.xoops.ini.php';
         $targetFile = Xoops::path('lib') . '/boot/hosts.legacy.ini.php';
         if (file_exists($targetFile)) {
-            chmod($targetFile, 0777);
+            @chmod($targetFile, 0777);
         }
         $status = file_put_contents($targetFile, file_get_contents($sourceFile));
-        chmod($targetFile, 0444);
         if (!$status) {
             $message[] = "Hosts file 'hosts.legacy.ini.php' is not setup correctly.";
         }
@@ -114,9 +113,9 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
 
         // Create legacy modules view
         $sql = "CREATE VIEW " . $xoopsDB->prefix('modules') . " AS SELECT * FROM " . Xoops::getModel('module')->info('name');
-        $status = $status * (int) $xoopsDB->query($sql);
+        $result = $xoopsDB->query($sql);
         $createdViews[] = 'modules';
-        if (!$status) {
+        if ((int) $result->errorCode()) {
             $message[] = "View 'modules' is not created";
             return $onFailure($cretedTables, $createdViews);
         }
@@ -127,9 +126,9 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
                 "legacy.* " .
                 "FROM " . Xoops::getModel('user_account')->info('name') . " AS account " .
                 "LEFT JOIN " . $xoopsDB->prefix('legacy_users') . " AS legacy on legacy.id = account.id";
-        $status = $status * (int) $xoopsDB->query($sql);
+        $result = $xoopsDB->query($sql);
         $createdViews[] = 'users';
-        if (!$status) {
+        if ((int) $result->errorCode()) {
             $message[] = "View 'users' is not created";
             return $onFailure($cretedTables, $createdViews);
         }
@@ -186,11 +185,13 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
             ':hammer:'  => 'smil3dbd4e5e7563a.gif',
             ':idea:'    => 'smil3dbd4e7853679.gif',
         );
+        $error = 0;
         $i = 0;
         foreach ($smileyMap as $code => $image) {
-            $status = $status * (int) $xoopsDB->query("INSERT INTO " . $xoopsDB->prefix("smiles") . " (`code`, `smile_url`, `emotion`) VALUES (" . $xoopsDB->quote($code) . ", " . $xoopsDB->quote($image) . ", " . $xoopsDB->quote(constant("_LEGACY_SYSTEM_SMILEY_" . (++$i))) . ")");
+            $result = $xoopsDB->query("INSERT INTO " . $xoopsDB->prefix("smiles") . " (`code`, `smile_url`, `emotion`) VALUES (" . $xoopsDB->quote($code) . ", " . $xoopsDB->quote($image) . ", " . $xoopsDB->quote(constant("_LEGACY_SYSTEM_SMILEY_" . (++$i))) . ")");
+            $error = $error || (int) $result->errorCode();
         }
-        if (!$status) {
+        if ($error) {
             $message[] = "Smiley data are not created";
             return $onFailure($cretedTables, $createdViews);
         }
@@ -226,11 +227,13 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
                 'image'     => 'rank3dbf8ee8681cd.gif'
             ),
         );
+        $error = 0;
         $i = 0;
         foreach ($rankList as $rank) {
-            $status = $status * (int) $xoopsDB->query("INSERT INTO " . $xoopsDB->prefix("ranks") . " (`rank_title`, `rank_min`, `rank_max`, `rank_special`, `rank_image`) VALUES (" . $xoopsDB->quote(constant("_LEGACY_SYSTEM_RANK_" . (++$i))) . ", " . $rank['param'][0] . ", " . $rank['param'][1] . ", " . $rank['param'][2] . ", " . $xoopsDB->quote($rank['image']) . ")");
+            $result = $xoopsDB->query("INSERT INTO " . $xoopsDB->prefix("ranks") . " (`rank_title`, `rank_min`, `rank_max`, `rank_special`, `rank_image`) VALUES (" . $xoopsDB->quote(constant("_LEGACY_SYSTEM_RANK_" . (++$i))) . ", " . $rank['param'][0] . ", " . $rank['param'][1] . ", " . $rank['param'][2] . ", " . $xoopsDB->quote($rank['image']) . ")");
+            $error = $error || (int) $result->errorCode();
         }
-        if (!$status) {
+        if ($error) {
             $message[] = "Rank data are not created";
             return $onFailure($cretedTables, $createdViews);
         }

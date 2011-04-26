@@ -25,15 +25,15 @@ return array(
             // event info: module, event name
             "event"     => array("user", "register"),
             // callback info: class, method
-            "callback"  => array("user", "register")
+            "callback"  => "user::register"
         ),
         array(
             "event"     => array("user", "activate"),
-            "callback"  => array("user", "activate")
+            "callback"  => "user::activate"
         ),
         array(
             "event"     => array("user", "delete"),
-            "callback"  => array("user", "delete")
+            "callback"  => "user::delete"
         ),
     ),
 );
