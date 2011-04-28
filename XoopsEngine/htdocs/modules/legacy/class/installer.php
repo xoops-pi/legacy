@@ -56,17 +56,27 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
      */
     protected function setupBoot(& $message)
     {
-        $status = 0;
-        foreach (array('engine', 'hosts') as $section) {
+        $status = 1;
+        // Copy legacy config files
+        $sections = array('engine', 'hosts');
+        foreach ($sections as $section) {
             $sourceFile = Xoops::path('lib') . '/boot/' . $section . '.xoops.ini.php';
             $targetFile = Xoops::path('lib') . '/boot/' . $section . '.legacy.ini.php';
+            if (!file_exists($targetFile)) {
+                touch($targetFile);
+            }
             if (file_exists($targetFile) && !is_writable($targetFile)) {
                 @chmod($targetFile, 0777);
             }
-            $status = $status * file_put_contents($targetFile, file_get_contents($sourceFile));
-            if (!$status) {
+            $sourceContent = file_get_contents($sourceFile);
+            if ($section == 'engine') {
+                $sourceContent = preg_replace('/(.*)\bidentifier([\s]?)=([\s]?)([\'"]?)([a-zA-Z0-9_\-\.]*)\\4(.*)/sm', '\\1identifier\\2=\\3\\4\\5legacy\\4\\6', $sourceContent);
+            }
+            $state = file_put_contents($targetFile, $sourceContent);
+            if (!$state) {
                 $message[] = $section . ' file for legacy is not setup correctly.';
             }
+            $status = $status * $state;
         }
 
         return $status;

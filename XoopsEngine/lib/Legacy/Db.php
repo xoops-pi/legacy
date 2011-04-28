@@ -310,12 +310,12 @@ class Legacy_Db
         if (!empty($limit)) {
             $sql = $sql . ' LIMIT ' . (int)$start . ', ' . (int)$limit;
         }
-        try {
+        //try {
             $result = $this->conn->query($sql);
             //$result = ('' === $stmt->errorCode() || '00000' === $stmt->errorCode()) ? true : false;
-        } catch (Exception $e) {
-            $result = false;
-        };
+        //} catch (Exception $e) {
+        //    $result = false;
+        //};
 
         /*
         if ($result = $this->conn->query($sql)) {
