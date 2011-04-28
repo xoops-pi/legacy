@@ -22,7 +22,7 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
 {
     public function preInstall(&$message)
     {
-        $status = $this->setupHost($message);
+        $status = $this->setupBoot($message);
         if ($status) {
             $status = $this->setupDb($message);
         }
@@ -52,18 +52,21 @@ class Module_Legacy_Installer extends Xoops_Installer_Abstract
     }
 
     /**
-     * Set up hosts paths, copies from default engine (xoops)
+     * Set up hosts and engine config, copies from default engine (xoops)
      */
-    protected function setupHost(& $message)
+    protected function setupBoot(& $message)
     {
-        $sourceFile = Xoops::path('lib') . '/boot/hosts.xoops.ini.php';
-        $targetFile = Xoops::path('lib') . '/boot/hosts.legacy.ini.php';
-        if (file_exists($targetFile)) {
-            @chmod($targetFile, 0777);
-        }
-        $status = file_put_contents($targetFile, file_get_contents($sourceFile));
-        if (!$status) {
-            $message[] = "Hosts file 'hosts.legacy.ini.php' is not setup correctly.";
+        $status = 0;
+        foreach (array('engine', 'hosts') as $section) {
+            $sourceFile = Xoops::path('lib') . '/boot/' . $section . '.xoops.ini.php';
+            $targetFile = Xoops::path('lib') . '/boot/' . $section . '.legacy.ini.php';
+            if (file_exists($targetFile) && !is_writable($targetFile)) {
+                @chmod($targetFile, 0777);
+            }
+            $status = $status * file_put_contents($targetFile, file_get_contents($sourceFile));
+            if (!$status) {
+                $message[] = $section . ' file for legacy is not setup correctly.';
+            }
         }
 
         return $status;
