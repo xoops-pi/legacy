@@ -1,6 +1,6 @@
 {
-    "name": "xoops/legacy",
-    "description": "Legacy code for XOOPS Project.",
+    "name": "xoops/stable",
+    "description": "Legacy stable code for XOOPS Project.",
     "keywords": [
         "xoops",
         "package",
