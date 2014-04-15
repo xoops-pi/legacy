@@ -1,0 +1,20 @@
+{
+    "name": "xoops/legacy",
+    "description": "Legacy code for XOOPS Project.",
+    "keywords": [
+        "xoops",
+        "package",
+        "legacy"
+    ],
+    "homepage": "http://pialog.org",
+    "license": "GPL v2",
+    "authors": [
+        {
+            "name": "Taiwen Jiang",
+            "email": "taiwen@me.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.0"
+    }
+}
